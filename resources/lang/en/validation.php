@@ -116,6 +116,16 @@ return [
     |
     */
 
-    'attributes' => [],
-
+    'attributes' => [
+        'data' => [
+            'attributes' => [
+                'name' => 'name',
+                'quantity' => 'quantity',
+                'order_id' => 'order_id',
+            ],
+            'relationships' => [
+                'product' => ['data' => ['id' => 'product id']]
+            ],
+        ],
+    ],
 ];
