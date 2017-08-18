@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9528bff48e959f4ec882d40aa57fb12b",
+    "content-hash": "86df3cecbbc4d3728db233f51a47ad3f",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -454,12 +454,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "76cb5505845665a93816f05df980fc4a6533212c"
+                "reference": "2626de6c5495c39b8874b34dab7ad73f89dcb819"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/76cb5505845665a93816f05df980fc4a6533212c",
-                "reference": "76cb5505845665a93816f05df980fc4a6533212c",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/2626de6c5495c39b8874b34dab7ad73f89dcb819",
+                "reference": "2626de6c5495c39b8874b34dab7ad73f89dcb819",
                 "shasum": ""
             },
             "require": {
@@ -578,7 +578,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-08-15T16:35:27+00:00"
+            "time": "2017-08-18T18:26:02+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -645,16 +645,16 @@
         },
         {
             "name": "league/csv",
-            "version": "dev-master",
+            "version": "9.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/csv.git",
-                "reference": "73fa83650bbc2980488d0af59ae30fd2af5ab6be"
+                "reference": "60ea563773f1c50162a948c44901c93b9a0aee56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/csv/zipball/73fa83650bbc2980488d0af59ae30fd2af5ab6be",
-                "reference": "73fa83650bbc2980488d0af59ae30fd2af5ab6be",
+                "url": "https://api.github.com/repos/thephpleague/csv/zipball/60ea563773f1c50162a948c44901c93b9a0aee56",
+                "reference": "60ea563773f1c50162a948c44901c93b9a0aee56",
                 "shasum": ""
             },
             "require": {
@@ -705,7 +705,7 @@
                 "read",
                 "write"
             ],
-            "time": "2017-08-14T11:58:38+00:00"
+            "time": "2017-08-18T10:27:55+00:00"
         },
         {
             "name": "league/flysystem",
@@ -1129,6 +1129,56 @@
             "time": "2017-03-13T16:27:32+00:00"
         },
         {
+            "name": "predis/predis",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2016-06-16T16:22:20+00:00"
+        },
+        {
             "name": "psr/container",
             "version": "1.0.0",
             "source": {
@@ -1426,6 +1476,75 @@
                 "uuid"
             ],
             "time": "2017-08-04T13:39:04+00:00"
+        },
+        {
+            "name": "spatie/laravel-responsecache",
+            "version": "dev-laravel-55",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-responsecache.git",
+                "reference": "e1bc8c003aef47df8319080a7ad8d9d73171723d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-responsecache/zipball/e1bc8c003aef47df8319080a7ad8d9d73171723d",
+                "reference": "e1bc8c003aef47df8319080a7ad8d9d73171723d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "5.5.x-dev",
+                "illuminate/config": "5.5.x-dev",
+                "illuminate/console": "5.5.x-dev",
+                "illuminate/contracts": "5.5.x-dev",
+                "illuminate/http": "5.5.x-dev",
+                "illuminate/support": "5.5.x-dev",
+                "nesbot/carbon": "~1.19",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.9",
+                "orchestra/testbench": "3.5.x-dev",
+                "phpunit/phpunit": "^6.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\ResponseCache\\ResponseCacheServiceProvider"
+                    ],
+                    "aliases": {
+                        "ResponseCache": "Spatie\\ResponseCache\\ResponseCacheFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\ResponseCache\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Speed up a Laravel application by caching the entire response",
+            "homepage": "https://github.com/spatie/laravel-responsecache",
+            "keywords": [
+                "cache",
+                "laravel",
+                "laravel-responsecache",
+                "performance",
+                "response",
+                "spatie"
+            ],
+            "time": "2017-08-12T13:34:45+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4691,7 +4810,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "spatie/laravel-responsecache": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
