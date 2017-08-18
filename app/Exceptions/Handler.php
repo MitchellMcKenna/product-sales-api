@@ -3,7 +3,11 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -13,17 +17,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
-    ];
-
-    /**
-     * A list of the inputs that are never flashed for validation exceptions.
-     *
-     * @var array
-     */
-    protected $dontFlash = [
-        'password',
-        'password_confirmation',
+        InputValidationException::class
     ];
 
     /**
@@ -43,11 +37,33 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Exception $e)
     {
-        return parent::render($request, $exception);
+        if ($e instanceof MethodNotAllowedHttpException) {
+            return new Response(
+                ['errors' => [['code' => 4, 'title' => 'Method not allowed.']]],
+                Response::HTTP_METHOD_NOT_ALLOWED
+            );
+        }
+
+        if ($e instanceof NotFoundHttpException || $e instanceof ModelNotFoundException) {
+            return new Response(
+                ['errors' => [['code' => 1, 'title' => 'Not found.']]],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        // Render errors when debug is on, else catch them and report 404 or fallback to 500 error response.
+        if (env('APP_DEBUG')) {
+            return parent::render($request, $e);
+        }
+
+        return new Response(
+            ['errors' => [['code' => 3, 'title' => 'Undefined server error.']]],
+            Response::HTTP_INTERNAL_SERVER_ERROR
+        );
     }
 }
