@@ -18,6 +18,7 @@
         "doctrine/dbal": "^2.6",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
+        "laravel/homestead": "^6.1",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~6.0",
         "squizlabs/php_codesniffer": "^3.0"
