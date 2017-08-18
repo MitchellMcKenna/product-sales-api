@@ -1,0 +1,316 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Product Sales API",
+		"_postman_id": "b3739ace-e087-32ce-3947-286b258bb9d4",
+		"description": "An example of a simple Product Sales API.\n\nThis API complies with OAuth2 for authentication and [JSON API 1.0](http://jsonapi.org/format/1.0/) for API endpoints.\n\n## API Responses\n\nA complete list of possible HTTP status codes the API can return can be found at the bottom of the document. 2xx series status codes are returned on success, 4xx series status codes for client issues, and 5xx series status codes for server issues.\n\nIf the response is a 2xx status code and a document is returned, the body will contain a <code>data</code> offset containing the \"primary data\", a <code>meta</code> offset with meta-data, and possibly a <code>inluded</code> offset of objects related to the primary data. If a 4xx or 5xx status code is returned the body will contain an <code>errors</code> offset.\n\nSee [jsonapi.org/format/#document-structure](http://jsonapi.org/format/1.0/#document-structure) for more information on document structure.\n\n## Handling Errors\n\nAll 4xx and 5xx responses that come from the API will return an <code>errors</code> offset in the JSON body of the response which may contain one or more errors. An error will include a <code>code</code> and <code>title</code> offset, as well as possibly a <code>detail</code> offset with more information about the error and/or a <code>source</code> paramater with reference to the source of the error. A complete list of error codes can be found at the bottom of the document.\n\nSee [jsonapi.org/format/1.0/#errors](http://jsonapi.org/format/1.0/#errors) for more information on the error format.\n\n## OAuth / API Key\n\nTodo.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"description": "",
+			"item": [
+				{
+					"name": "/products{?page,limit}",
+					"request": {
+						"url": {
+							"raw": "{{url}}/products?page=1&limit=5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "limit",
+									"value": "5",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products/top-sellers{?begin,end,page,limit}",
+					"request": {
+						"url": {
+							"raw": "{{url}}/products/top-sellers?begin=1262304000",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products",
+								"top-sellers"
+							],
+							"query": [
+								{
+									"key": "begin",
+									"value": "1262304000",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products",
+					"request": {
+						"url": "{{url}}/products",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 6zfTAR6zzJaNcr97nUCX586TVlqFC2H37F2VmZ9p,",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"product\",\n    \"attributes\": {\n      \"name\": \"Reebox Jersey\"\n    }\n  }\n}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products/{product_id}",
+					"request": {
+						"url": "{{url}}/products/1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products/{product_id}",
+					"request": {
+						"url": "{{url}}/products/1",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"product\",\n    \"attributes\": {\n      \"name\": \"Mitch T-shirts\"\n    }\n  }\n}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products/{product_id}",
+					"request": {
+						"url": "{{url}}/products/5",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"description": "",
+			"item": [
+				{
+					"name": "/orders{?page,limit}",
+					"request": {
+						"url": {
+							"raw": "{{url}}/orders?page=5&limit=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "5",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders",
+					"request": {
+						"url": "{{url}}/orders",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"order\",\n    \"attributes\": {\n      \"order_id\": 123456789,\n      \"quantity\": 6\n    },\n    \"relationships\": {\n      \"product\": {\n        \"data\": { \"type\": \"product\", \"id\": \"1\" }\n      }\n    }\n  }\n}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders/{order_id}",
+					"request": {
+						"url": "{{url}}/orders/1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders/{order_id}",
+					"request": {
+						"url": "{{url}}/orders/1",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"order\",\n    \"attributes\": {\n      \"quantity\": 9\n    }\n  }\n}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders/{order_id}",
+					"request": {
+						"url": "{{url}}/orders/5",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
