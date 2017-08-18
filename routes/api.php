@@ -11,5 +11,6 @@
 |
 */
 
+Route::get('products/top-sellers', 'TopSellersController@index');
 Route::resource('products', 'ProductController', ['except' => ['create', 'edit']]);
 Route::resource('orders', 'OrderController', ['except' => ['create', 'edit']]);
