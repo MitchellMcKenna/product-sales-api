@@ -1,0 +1,358 @@
+FORMAT: 1A
+
+# Product Sales API
+
+An example of a simple Product Sales API.
+
+This API complies with [JSON API 1.0](http://jsonapi.org/format/1.0/).
+
+## API Responses
+
+A complete list of possible HTTP status codes the API can return can be found at the bottom of the document. 2xx series status codes are returned on success, 4xx series status codes for client issues, and 5xx series status codes for server issues.
+
+### Successful Requests
+
+If the response is a 2xx status code and a document is returned, the body will contain a <code>data</code> offset containing the "primary data", a <code>meta</code> offset with meta-data, and possibly a <code>inluded</code> offset of objects related to the primary data.
+
+See [jsonapi.org/format/#document-structure](http://jsonapi.org/format/1.0/#document-structure) for more information on document structure.
+
+### Errors
+
+All 4xx and 5xx responses that come from the API will return an <code>errors</code> offset in the JSON body of the response which may contain one or more errors. An error will include a <code>code</code> and <code>title</code> offset, as well as possibly a <code>detail</code> offset with more information about the error and/or a <code>source</code> paramater with reference to the source of the error. A complete list of error codes can be found at the bottom of the document.
+
+See [jsonapi.org/format/1.0/#errors](http://jsonapi.org/format/1.0/#errors) for more information on the error format.
+
+# Group Products
+
+## Products Collection [/products]
+
+### List All Products [GET /products{?page,limit}]
+
++ Parameters
+    + page: 2 (number, optional) - Pagination page number.
+        + Default: 1
+    + limit: 20 (number, optional) - Pagination page size..
+        + Default: 15
+    
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + data (array[Product])
+
+### List Top Sellers [GET /products/top-sellers{?begin,end,page,limit}]
+
++ Parameters
+    + begin: `1262304000` (string, optional) - Include orders since this date.
+        + Default: <24 hours prior>.
+    + end: `1502932126` (string, optional) - Include orders up to this date.
+        + Default: <current unix timestamp>
+    + page: 2 (number, optional) - Pagination page number.
+        + Default: 1
+    + limit: 20 (number, optional) - Pagination page size..
+        + Default: 15
+    
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + data (array)
+            + (object)
+                + type: product (string, required)
+                + attributes (object, required)
+                    + name: `Reebox Jersey` (string)
+                + meta (object, required)
+                    + quantity: 300 (number, required) - Quantity sold over time frame requested.
+
+### Create a New Product [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
+    + Attributes (object)
+        + data (object, required)
+            + type: product (string, required)
+            + attributes (object, required)
+                + name: `Reebox Jersey` (string)
+
+                        
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + data (Product)
+
+## Product [/products/{product_id}]
+
++ Parameters
+    + product_id: `1234` (required, string)
+
+### Retrieve a Product [GET]
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + data (Product)
+
+### Update a Product [PATCH]
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
+    + Attributes (object)
+        + data (object, required)
+            + type: product (string, required)
+            + attributes (object, required)
+                + name: `NewBalance T-shirts` (string)
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + data (object, required)
+            + type: product (string, required)
+            + id: 1234 (string, required)
+            + attributes (object, required)
+                + name: `NewBalance T-shirts` (string)
+                + created_at: `1455178965` (string, required) - Unix timestamp.
+                + updated_at: `1502929542` (string, required) - Unix timestamp.
+
+### Delete a Product [DELETE]
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 204
+
+# Group Orders
+
+## Orders Collection [/orders]
+
+### Get All Orders [GET /orders{?page,limit}]
+
++ Parameters
+    + page: 2 (number, optional) - Pagination page number.
+        + Default: 1
+    + limit: 20 (number, optional) - Pagination page size..
+        + Default: 15
+    
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + data (array[Order])
+        + included (array[Product])
+
+### Create a New Order [POST]
+
++ Request (application/json)
+
+    + Headers
+
+
+            Accept: application/json
+
+    + Attributes (object)
+        + data (object, required)
+            + type: order (string, required)
+            + attributes (object, required)
+                + order_id: 646711637 (number, required)
+                + quantity: 3 (number, required)
+            + relationships (object, required)
+                + product (object, required)
+                    + data (object, required)
+                        + type: product (string, required)
+                        + id: 9 (string, required)
+                        
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + data (Order)
+        
+## Order [/orders/{order_id}]
+
++ Parameters
+    + order_id: 1234 (required, string)
+
+### Retrieve an Order [GET]
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + data (Order)
+
+### Update an Order [PATCH]
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
+    + Attributes (object)
+        + data (object, required)
+            + type: order (string, required)
+            + attributes (object, required)
+                + quantity: 9 (number)
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + data (object, required)
+            + type: order (string, required)
+            + id: 1234 (string, required)
+            + attributes (object, required)
+                + order_id: 745104218 (number, required)
+                + quantity: 9 (number, required)
+                + created_at: `1455178965` (string, required) - Unix timestamp.
+                + updated_at: `5015178965` (string, required) - Unix timestamp.
+            + relationships (object, required)
+                + product (object, required)
+                    + data (object, required)
+                        + type: product (string, required)
+                        + id: 9 (string, required)
+
+### Delete an Order [DELETE]
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 204
+
+# Group Appendix
+
+## HTTP Status Codes
+
+<table>
+  <thead>
+  <tr>
+    <th>Code</th>
+    <th>Text</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>200</td>
+    <td>OK</td>
+    <td>Success!</td>
+  </tr>
+  <tr>
+    <td>201</td>
+    <td>Created</td>
+    <td>The request has been fulfilled and resulted in a new resource being created.</td>
+  </tr>
+  <tr>
+    <td>400</td>
+    <td>Bad Request</td>
+    <td>The request was invalid or cannot be otherwise served. See supplied message for further explanation.</td>
+  </tr>
+  <tr>
+    <td>404</td>
+    <td>Not found</td>
+    <td>The URI requested is invalid or the resource requested, such as a user, does not exist.</td>
+  </tr>
+  <tr>
+    <td>500</td>
+    <td>Internal Error</td>
+    <td>Something is broken. Please contact the Video Clip Generator API team to investigate.</td>
+  </tr>
+  </tbody>
+</table>
+
+## Error Codes
+
+<table>
+  <thead>
+  <tr>
+    <th>Code</th>
+    <th>Title</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>1</td>
+    <td>Not found.</td>
+    <td>The resource requested, such as a clip, does not exist.</td>
+  </tr>
+    <td>2</td>
+    <td>Invalid input data.</td>
+    <td>
+        Invalid input data was supplied or required input was not provided. <br />
+        See error's <span class="code">data</span> offset for an array of invalid fields and reasons.
+    </td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Undefined server error.</td>
+    <td></td>
+  </tr>
+    <tr>
+    <td>4</td>
+    <td>Method not allowed.</td>
+    <td>The HTTP method used (eg. GET, POST, etc) is not allowed.</td>
+  </tr>
+  </tbody>
+</table>
+
+# Data Structures
+
+# Product (object)
++ type: product (string, required)
++ id: 123 (string, required)
++ attributes (object, required)
+    + name: `Nike Shorts` (string, required)
+    + created_at: `1455178965` (string, required) - Unix timestamp.
+    + updated_at: `1455178965` (string, required) - Unix timestamp.
+    
+# Order (object)
++ type: order (string, required)
++ id: 123456 (string, required)
++ attributes (object, required)
+    + order_id: 745104218 (number, required)
+    + quantity: 4 (number, required)
+    + created_at: `1455178965` (string, required) - Unix timestamp.
+    + updated_at: `1455178965` (string, required) - Unix timestamp.
++ relationships (object, required)
+    + product (object, required)
+        + data (object, required)
+            + type: product (string, required)
+            + id: 123 (string, required)
