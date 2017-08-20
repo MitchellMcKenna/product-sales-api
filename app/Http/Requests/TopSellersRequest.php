@@ -32,12 +32,12 @@ class TopSellersRequest extends FormRequest
 
     public function getBegin()
     {
-        return (new DateTime)->setTimestamp($this->input('end', Carbon::now()->subHours(24)->timestamp));
+        return (new DateTime)->setTimestamp($this->input('begin', Carbon::now()->subHours(24)->timestamp));
     }
 
     public function getEnd()
     {
-        return (new DateTime)->setTimestamp($this->input('begin', Carbon::now()->timestamp));
+        return (new DateTime)->setTimestamp($this->input('end', Carbon::now()->timestamp));
     }
 
     public function getPage()

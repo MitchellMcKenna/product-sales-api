@@ -16,7 +16,7 @@ class TopSellersController extends Controller
             ->selectRaw('products.*, SUM(orders.quantity) as quantity')
             ->orderBy('quantity', 'desc')
             ->groupBy('orders.product_id')
-            ->whereBetween('orders.created_at', [$request->getEnd(), $request->getBegin()])
+            ->whereBetween('orders.created_at', [$request->getBegin(), $request->getEnd()])
             ->limit($request->getLimit())
             ->offset($request->getLimit() * ($request->getPage() - 1))
             ->get();

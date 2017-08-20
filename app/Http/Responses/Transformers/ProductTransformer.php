@@ -13,8 +13,8 @@ class ProductTransformer extends TransformerAbstract
         return [
             'id' => (string) $product->id,
             'name' => $product->name,
-            'created_at' => $product->created_at->getTimestamp(),
-            'updated_at' => $product->updated_at->getTimestamp(),
+            'created_at' => $product->created_at ? $product->created_at->getTimestamp() : null,
+            'updated_at' => $product->updated_at ? $product->updated_at->getTimestamp() : null,
         ] + $meta;
     }
 }

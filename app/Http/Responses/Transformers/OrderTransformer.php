@@ -21,8 +21,8 @@ class OrderTransformer extends TransformerAbstract
             'id' => (string) $order->id,
             'order_id' => $order->order_id,
             'quantity' => $order->quantity,
-            'created_at' => $order->created_at->getTimestamp(),
-            'updated_at' => $order->updated_at->getTimestamp(),
+            'created_at' => $order->created_at ? $order->created_at->getTimestamp() : null,
+            'updated_at' => $order->updated_at ? $order->updated_at->getTimestamp() : null,
             'links' => [
                 'self' => '/orders/' . $order->id,
             ]
