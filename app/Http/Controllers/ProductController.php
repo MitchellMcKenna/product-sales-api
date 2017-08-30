@@ -17,12 +17,13 @@ class ProductController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     * @param Product $model
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Product $model)
     {
         /** @var LengthAwarePaginator $paginator */
-        $paginator = (Product::paginate($request->input('limit')))->appends($request->query());
+        $paginator = $model->paginate($request->input('limit'))->appends($request->query());
         $products = $paginator->getCollection();
         return new ProductCollectionResponse($products, $paginator);
     }
@@ -31,11 +32,13 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param ProductCreateRequest $request
-     * @return \Illuminate\Http\Response
+     * @param Product $model
+     * @return Response
      */
-    public function store(ProductCreateRequest $request)
+    public function store(ProductCreateRequest $request, Product $model)
     {
-        return new ProductResponse(Product::create(['name' => $request->getName()]), Response::HTTP_CREATED);
+        $product = $model->create(['name' => $request->getName()]);
+        return new ProductResponse($product, Response::HTTP_CREATED);
     }
 
     /**

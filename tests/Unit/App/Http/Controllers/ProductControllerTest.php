@@ -33,7 +33,7 @@ class ProductControllerTest extends TestCase
     {
         factory(Product::class, 2)->create();
         $request = new Request();
-        $response = $this->controller->index($request);
+        $response = $this->controller->index($request, new Product());
         $this->assertInstanceOf(ProductCollectionResponse::class, $response);
     }
 
@@ -52,7 +52,7 @@ class ProductControllerTest extends TestCase
             'data' => ['attributes' => ['name' => $product->name]]
         ]));
 
-        $response = $this->controller->store($request);
+        $response = $this->controller->store($request, new Product());
         $this->assertInstanceOf(ProductResponse::class, $response);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertDatabaseHas('products', ['name' => $product->name]);

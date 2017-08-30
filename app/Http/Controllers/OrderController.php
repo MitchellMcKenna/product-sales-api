@@ -17,12 +17,13 @@ class OrderController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     * @param Order $model
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Order $model)
     {
         /** @var LengthAwarePaginator $paginator */
-        $paginator = (Order::paginate($request->input('limit')))->appends($request->query());
+        $paginator = $model->paginate($request->input('limit'))->appends($request->query());
         $orders = $paginator->getCollection();
 
         return new OrderCollectionResponse($orders, $paginator);
@@ -32,11 +33,12 @@ class OrderController extends Controller
      * Store a newly created resource in storage.
      *
      * @param OrderCreateRequest $request
-     * @return \Illuminate\Http\Response
+     * @param Order $model
+     * @return Response
      */
-    public function store(OrderCreateRequest $request)
+    public function store(OrderCreateRequest $request, Order $model)
     {
-        $order = Order::create([
+        $order = $model->create([
             'order_id' => $request->getOrderId(),
             'quantity' => $request->getQuantity(),
             'product_id' => $request->getProductId()

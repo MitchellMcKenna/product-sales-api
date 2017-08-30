@@ -7,6 +7,7 @@ use App\Http\Requests\TopSellersRequest;
 use App\Order;
 use App\Product;
 use Carbon\Carbon;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,10 +18,14 @@ class TopSellersControllerTest extends TestCase
     /** @var TopSellersController */
     protected $controller;
 
+    /** @var DatabaseManager */
+    protected $db;
+
     protected function setUp()
     {
         parent::setUp();
         $this->controller = new TopSellersController();
+        $this->db = $this->app->make(DatabaseManager::class);
     }
 
     public function testIndexDefaultsToOnlyIncludeOrdersInLast24Hours()
@@ -34,7 +39,7 @@ class TopSellersControllerTest extends TestCase
             ['product_id' => $topSeller->id, 'quantity' => 4]
         );
 
-        $response = $this->controller->index(new TopSellersRequest());
+        $response = $this->controller->index(new TopSellersRequest(), $this->db);
         $this->assertEquals(8, $response->getOriginalContent()['data'][0]['meta']['quantity']);
     }
 
@@ -54,7 +59,7 @@ class TopSellersControllerTest extends TestCase
         factory(Order::class)->create(['product_id' => $topSeller->id, 'created_at' => Carbon::create(2013)]);
 
         $request = new TopSellersRequest(['begin' => $begin->timestamp, 'end' => $end->timestamp]);
-        $response = $this->controller->index($request);
+        $response = $this->controller->index($request, $this->db);
         $this->assertEquals(10, $response->getOriginalContent()['data'][0]['meta']['quantity']);
     }
 
@@ -64,7 +69,7 @@ class TopSellersControllerTest extends TestCase
         $secondPlace = factory(Order::class)->create(['quantity' => 50]);
 
         $request = new TopSellersRequest(['page' => 2, 'limit' => 1]);
-        $response = $this->controller->index($request);
+        $response = $this->controller->index($request, $this->db);
         $this->assertEquals($secondPlace->product->id, $response->getOriginalContent()['data'][0]['id']);
     }
 }

@@ -30,7 +30,7 @@ class OrderControllerTest extends TestCase
     {
         factory(Order::class, 2)->create();
         $request = new Request();
-        $response = $this->controller->index($request);
+        $response = $this->controller->index($request, new Order());
         $this->assertInstanceOf(OrderCollectionResponse::class, $response);
     }
 
@@ -53,7 +53,7 @@ class OrderControllerTest extends TestCase
             ]
         ]));
 
-        $response = $this->controller->store($request);
+        $response = $this->controller->store($request, new Order());
         $this->assertInstanceOf(OrderResponse::class, $response);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertDatabaseHas('orders', ['order_id' => $order->order_id]);
