@@ -30,21 +30,33 @@ class TopSellersRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return DateTime
+     */
     public function getBegin()
     {
         return (new DateTime)->setTimestamp($this->input('begin', Carbon::now()->subHours(24)->timestamp));
     }
 
+    /**
+     * @return DateTime
+     */
     public function getEnd()
     {
         return (new DateTime)->setTimestamp($this->input('end', Carbon::now()->timestamp));
     }
 
+    /**
+     * @return int
+     */
     public function getPage()
     {
         return $this->input('page', 1);
     }
 
+    /**
+     * @return int
+     */
     public function getLimit()
     {
         return $this->input('limit', 15);
