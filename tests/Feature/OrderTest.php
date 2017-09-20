@@ -26,9 +26,16 @@ class OrderTest extends TestCase
         // Add 9 more for a total of 10
         factory(Order::class, 9)->create();
         $this->get('/api/orders?page=2&limit=5')
-            ->assertJsonFragment(['meta' => ['pagination' => [
-                'total' => 10, 'count' => 5, 'per_page' => 5, 'current_page' => 2, 'total_pages' => 2
-            ]]]);
+            ->assertJsonStructure(['data', 'links' => ['first', 'last', 'prev', 'next'], 'meta'])
+            ->assertJsonFragment([
+                'current_page' => 2,
+                'from' => 6,
+                'last_page' => 2,
+                'path' => route('orders.index'),
+                'per_page' => "5",
+                'to' => 10,
+                'total' => 10
+            ]);
     }
 
     public function testShow()

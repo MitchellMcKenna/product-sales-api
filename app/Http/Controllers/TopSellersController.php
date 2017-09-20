@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TopSellersRequest;
-use App\Http\Responses\ProductCollectionResponse;
+use App\Http\Resources\ProductCollection;
 use App\Queries\TopSellersQuery;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -21,6 +21,6 @@ class TopSellersController extends Controller
             ['path' => $request->url()]
         ))->appends($request->query());
 
-        return new ProductCollectionResponse($products, $paginator);
+        return new ProductCollection($paginator);
     }
 }

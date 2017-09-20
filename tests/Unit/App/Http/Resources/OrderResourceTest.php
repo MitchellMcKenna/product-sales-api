@@ -1,19 +1,15 @@
 <?php
 
-namespace Tests\Unit\App\Http\Responses;
+namespace Tests\Unit\App\Http\Resources;
 
-use App\Http\Responses\OrderResponse;
+use App\Http\Resources\OrderResource;
 use App\Order;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Response;
 use Tests\TestCase;
 
-class OrderResponseTest extends TestCase
+class OrderResourceTest extends TestCase
 {
     use RefreshDatabase;
-
-    /** @var OrderResponse */
-    protected $response;
 
     /** @var  Order */
     protected $order;
@@ -25,15 +21,9 @@ class OrderResponseTest extends TestCase
         $this->order = factory(Order::class)->create();
     }
 
-    public function testSetsStatusCode()
-    {
-        $response = new OrderResponse($this->order, Response::HTTP_CREATED);
-        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
-    }
-
     public function testSetsContentAndFormatsCorrectly()
     {
-        $response = new OrderResponse($this->order);
+        $response = (new OrderResource($this->order))->response();
 
         $this->assertJsonStringEqualsJsonString($response->getContent(), json_encode([
             'data' => [

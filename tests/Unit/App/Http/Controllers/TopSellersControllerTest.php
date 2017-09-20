@@ -39,7 +39,7 @@ class TopSellersControllerTest extends TestCase
         factory(Order::class, 2)->create(['product_id' => $topSeller->id, 'quantity' => 4]);
 
         $response = $this->controller->index(new TopSellersRequest(), $this->query);
-        $this->assertEquals(8, $response->getOriginalContent()['data'][0]['meta']['quantity']);
+        $this->assertEquals(8, $response->response()->getOriginalContent()['data'][0]['meta']['quantity']);
     }
 
     public function testIndexPagination()
@@ -49,6 +49,6 @@ class TopSellersControllerTest extends TestCase
 
         $request = new TopSellersRequest(['page' => 2, 'limit' => 1]);
         $response = $this->controller->index($request, $this->query);
-        $this->assertEquals($secondPlace->product->id, $response->getOriginalContent()['data'][0]['id']);
+        $this->assertEquals($secondPlace->product->id, $response->response()->getOriginalContent()['data'][0]['id']);
     }
 }

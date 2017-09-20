@@ -1,14 +1,13 @@
 <?php
 
-namespace Tests\Unit\App\Http\Responses;
+namespace Tests\Unit\App\Http\Resources;
 
-use App\Http\Responses\ProductResponse;
+use App\Http\Resources\ProductResource;
 use App\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Response;
 use Tests\TestCase;
 
-class ProductResponseTest extends TestCase
+class ProductResourceTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -25,15 +24,9 @@ class ProductResponseTest extends TestCase
         $this->product = factory(Product::class)->create();
     }
 
-    public function testSetsStatusCode()
-    {
-        $response = new ProductResponse($this->product, Response::HTTP_CREATED);
-        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
-    }
-
     public function testSetsContentAndFormatsCorrectly()
     {
-        $response = new ProductResponse($this->product);
+        $response = (new ProductResource($this->product))->response();
 
         $this->assertJsonStringEqualsJsonString($response->getContent(), json_encode([
             'data' => [
