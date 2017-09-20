@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
-use App\Http\Responses\ProductCollectionResponse;
-use App\Http\Responses\ProductResponse;
+use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
 use App\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -18,14 +19,13 @@ class ProductController extends Controller
      *
      * @param Request $request
      * @param Product $model
-     * @return Response
+     * @return ProductCollection|JsonResponse
      */
     public function index(Request $request, Product $model)
     {
         /** @var LengthAwarePaginator $paginator */
         $paginator = $model->paginate($request->input('limit'))->appends($request->query());
-        $products = $paginator->getCollection();
-        return new ProductCollectionResponse($products, $paginator);
+        return new ProductCollection($paginator);
     }
 
     /**
@@ -33,23 +33,23 @@ class ProductController extends Controller
      *
      * @param ProductCreateRequest $request
      * @param Product $model
-     * @return Response
+     * @return ProductResource|JsonResponse
      */
     public function store(ProductCreateRequest $request, Product $model)
     {
         $product = $model->create(['name' => $request->getName()]);
-        return new ProductResponse($product, Response::HTTP_CREATED);
+        return new ProductResource($product);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return ProductResource|JsonResponse
      */
     public function show(Product $product)
     {
-        return new ProductResponse($product);
+        return new ProductResource($product);
     }
 
     /**
@@ -57,13 +57,13 @@ class ProductController extends Controller
      *
      * @param ProductUpdateRequest|Request $request
      * @param  \App\Product $product
-     * @return Response
+     * @return ProductResource|JsonResponse
      */
     public function update(ProductUpdateRequest $request, Product $product)
     {
         $product->name = $request->getName();
         $product->save();
-        return new ProductResponse($product);
+        return new ProductResource($product);
     }
 
     /**

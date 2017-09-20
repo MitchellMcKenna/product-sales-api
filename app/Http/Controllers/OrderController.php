@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderCreateRequest;
 use App\Http\Requests\OrderUpdateRequest;
-use App\Http\Responses\OrderCollectionResponse;
-use App\Http\Responses\OrderResponse;
+use App\Http\Resources\OrderCollection;
+use App\Http\Resources\OrderResource;
 use App\Order;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -18,15 +19,14 @@ class OrderController extends Controller
      *
      * @param Request $request
      * @param Order $model
-     * @return Response
+     * @return OrderCollection|JsonResponse
      */
     public function index(Request $request, Order $model)
     {
         /** @var LengthAwarePaginator $paginator */
         $paginator = $model->paginate($request->input('limit'))->appends($request->query());
-        $orders = $paginator->getCollection();
 
-        return new OrderCollectionResponse($orders, $paginator);
+        return new OrderCollection($paginator);
     }
 
     /**
@@ -34,7 +34,7 @@ class OrderController extends Controller
      *
      * @param OrderCreateRequest $request
      * @param Order $model
-     * @return Response
+     * @return OrderResource|JsonResponse
      */
     public function store(OrderCreateRequest $request, Order $model)
     {
@@ -43,18 +43,18 @@ class OrderController extends Controller
             'quantity' => $request->getQuantity(),
             'product_id' => $request->getProductId()
         ]);
-        return new OrderResponse($order, Response::HTTP_CREATED);
+        return new OrderResource($order);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @param  \App\Order $order
+     * @return OrderResource|JsonResponse
      */
     public function show(Order $order)
     {
-        return new OrderResponse($order);
+        return new OrderResource($order);
     }
 
     /**
@@ -62,7 +62,7 @@ class OrderController extends Controller
      *
      * @param OrderUpdateRequest $request
      * @param  \App\Order $order
-     * @return Response
+     * @return OrderResource|JsonResponse
      */
     public function update(OrderUpdateRequest $request, Order $order)
     {
@@ -71,7 +71,7 @@ class OrderController extends Controller
             'quantity' => $request->getQuantity(),
             'product_id' => $request->getProductId()
         ]));
-        return new OrderResponse($order);
+        return new OrderResource($order);
     }
 
     /**

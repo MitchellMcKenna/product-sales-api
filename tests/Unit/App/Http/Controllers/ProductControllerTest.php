@@ -5,8 +5,8 @@ namespace Tests\Unit\App\Http\Controllers;
 use App\Http\Controllers\ProductController;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
-use App\Http\Responses\ProductCollectionResponse;
-use App\Http\Responses\ProductResponse;
+use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
 use App\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
@@ -34,15 +34,17 @@ class ProductControllerTest extends TestCase
         factory(Product::class, 2)->create();
         $request = new Request();
         $response = $this->controller->index($request, new Product());
-        $this->assertInstanceOf(ProductCollectionResponse::class, $response);
+        $this->assertInstanceOf(ProductCollection::class, $response);
     }
 
     public function testShow()
     {
+        /** @var Product $product */
         $product = factory(Product::class)->create();
-        $response = $this->controller->show($product);
-        $this->assertInstanceOf(ProductResponse::class, $response);
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $product->wasRecentlyCreated = false;
+        $resource = $this->controller->show($product);
+        $this->assertInstanceOf(ProductResource::class, $resource);
+        $this->assertEquals(Response::HTTP_OK, $resource->response()->getStatusCode());
     }
 
     public function testStore()
@@ -52,24 +54,26 @@ class ProductControllerTest extends TestCase
             'data' => ['attributes' => ['name' => $product->name]]
         ]));
 
-        $response = $this->controller->store($request, new Product());
-        $this->assertInstanceOf(ProductResponse::class, $response);
-        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $resource = $this->controller->store($request, new Product());
+        $this->assertInstanceOf(ProductResource::class, $resource);
+        $this->assertEquals(Response::HTTP_CREATED, $resource->response()->getStatusCode());
         $this->assertDatabaseHas('products', ['name' => $product->name]);
     }
 
     public function testUpdate()
     {
+        /** @var Product $product */
         $product = factory(Product::class)->create();
+        $product->wasRecentlyCreated = false;
 
         $newName = "Updated Name";
         $request = ProductUpdateRequest::create("/api/products/{$product->id}", 'PATCH', [], [], [], [], json_encode([
             'data' => ['attributes' => ['name' => $newName]]
         ]));
-        $response = $this->controller->update($request, $product);
+        $resource = $this->controller->update($request, $product);
 
-        $this->assertInstanceOf(ProductResponse::class, $response);
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertInstanceOf(ProductResource::class, $resource);
+        $this->assertEquals(Response::HTTP_OK, $resource->response()->getStatusCode());
         $this->assertDatabaseHas('products', ['id' => $product->id, 'name' => $newName]);
     }
 

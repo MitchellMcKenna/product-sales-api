@@ -5,8 +5,8 @@ namespace Tests\Unit\App\Http\Controllers;
 use App\Http\Controllers\OrderController;
 use App\Http\Requests\OrderCreateRequest;
 use App\Http\Requests\OrderUpdateRequest;
-use App\Http\Responses\OrderCollectionResponse;
-use App\Http\Responses\OrderResponse;
+use App\Http\Resources\OrderCollection;
+use App\Http\Resources\OrderResource;
 use App\Order;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
@@ -31,15 +31,17 @@ class OrderControllerTest extends TestCase
         factory(Order::class, 2)->create();
         $request = new Request();
         $response = $this->controller->index($request, new Order());
-        $this->assertInstanceOf(OrderCollectionResponse::class, $response);
+        $this->assertInstanceOf(OrderCollection::class, $response);
     }
 
     public function testShow()
     {
+        /** @var Order $order */
         $order = factory(Order::class)->create();
-        $response = $this->controller->show($order);
-        $this->assertInstanceOf(OrderResponse::class, $response);
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $order->wasRecentlyCreated = false;
+        $resource = $this->controller->show($order);
+        $this->assertInstanceOf(OrderResource::class, $resource);
+        $this->assertEquals(Response::HTTP_OK, $resource->response()->getStatusCode());
     }
 
     public function testStore()
@@ -53,24 +55,26 @@ class OrderControllerTest extends TestCase
             ]
         ]));
 
-        $response = $this->controller->store($request, new Order());
-        $this->assertInstanceOf(OrderResponse::class, $response);
-        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $resource = $this->controller->store($request, new Order());
+        $this->assertInstanceOf(OrderResource::class, $resource);
+        $this->assertEquals(Response::HTTP_CREATED, $resource->response()->getStatusCode());
         $this->assertDatabaseHas('orders', ['order_id' => $order->order_id]);
     }
 
     public function testUpdate()
     {
+        /** @var Order $order */
         $order = factory(Order::class)->create();
+        $order->wasRecentlyCreated = false;
 
         $newOrderId = 12345;
         $request = OrderUpdateRequest::create("/api/orders/{$order->id}", 'PATCH', [], [], [], [], json_encode([
             'data' => ['attributes' => ['order_id' => $newOrderId]]
         ]));
-        $response = $this->controller->update($request, $order);
+        $resource = $this->controller->update($request, $order);
 
-        $this->assertInstanceOf(OrderResponse::class, $response);
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertInstanceOf(OrderResource::class, $resource);
+        $this->assertEquals(Response::HTTP_OK, $resource->response()->getStatusCode());
         $this->assertDatabaseHas('orders', ['id' => $order->id, 'order_id' => $newOrderId]);
     }
 
